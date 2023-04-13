@@ -1,6 +1,10 @@
 A package that mimics a Cupertino Style bottom sheet like this
 
-<video src="https://github.com/caseyryan/images/blob/master/cupertino_bottom_sheet/cupertino_bottomsheet.mp4?raw=true" width="220" />
+
+
+https://user-images.githubusercontent.com/4113558/231658984-bf3425ce-22bd-4964-b01a-9b4fbceb18a7.mp4
+
+
 
 Unlike existing packages that can mimic the same behavior flutter_cupernino_bottom_sheet does not require
 a scaffold for this purpose and can be used from any place and any time. 
