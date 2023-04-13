@@ -1,6 +1,8 @@
-A package that mimics a Cupertino Style behavior similar to 
-the one from this package https://pub.dev/packages/modal_bottom_sheet 
-but the difference is that flutter_cupernino_bottom_sheet does not require
+A package that mimics a Cupertino Style bottom sheet like this
+
+<video src='[your URL here](https://github.com/caseyryan/images/blob/master/cupertino_bottom_sheet/cupertino_bottomsheet.mp4?raw=true)' width=220/>
+
+Unlike existing packages that can mimic the same behavior flutter_cupernino_bottom_sheet does not require
 a scaffold for this purpose and can be used from any place and any time. 
 You don't have to use any special code except for wrapping your MaterialApp 
 with CupertinoBottomSheetRepaintBoundary() at the beginning. And that's it. 
@@ -8,10 +10,10 @@ That simple. You don't even need a specific context for it to work
 
 ## How it works. 
 It's very simple. Internally it uses a repaint boundary to create a screenshot 
-of the whole screen and make a RawImage out of it. 
-
-https://github.com/caseyryan/images/blob/master/cupertino_bottom_sheet/cupertino_bottomsheet.mp4?raw=true
-
+of the whole screen and make a RawImage out of it. So it doesn't matter if the 
+previous route maintains its state or not. It doesn't really need to know 
+anything about the previous route as it uses a screenshot instead of a widget 
+snapshot
 
 ## Getting started
 
@@ -35,11 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoBottomSheetRepaintBoundary(
       child: MaterialApp(
-        title: 'Flutter Cupertino Bottom Sheet',
-        theme: ThemeData(
-          primarySwatch: Colors.red,
-        ),
-        home: const TestPage(),
+        ...
       ),
     );
   }
@@ -73,11 +71,7 @@ Widget build(BuildContext context) {
   return CupertinoBottomSheetRepaintBoundary(
     child: MaterialApp(
       navigatorKey: cupertinoBottomSheetNavigatorKey,
-      title: 'Flutter Cupertino Bottom Sheet',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
-      home: const TestPage(),
+      ...
     ),
   );
 }
