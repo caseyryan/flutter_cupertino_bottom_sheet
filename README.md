@@ -1,6 +1,6 @@
 A package that mimics a Cupertino Style bottom sheet like this
 
-<video src='[your URL here](https://github.com/caseyryan/images/blob/master/cupertino_bottom_sheet/cupertino_bottomsheet.mp4?raw=true)' width=220/>
+<video src="https://github.com/caseyryan/images/blob/master/cupertino_bottom_sheet/cupertino_bottomsheet.mp4?raw=true" width="220" />
 
 Unlike existing packages that can mimic the same behavior flutter_cupernino_bottom_sheet does not require
 a scaffold for this purpose and can be used from any place and any time. 
