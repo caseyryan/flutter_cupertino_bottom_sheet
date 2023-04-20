@@ -1,8 +1,8 @@
 A package that mimics a Cupertino Style bottom sheet like this
 
+https://pub.dev/packages/flutter_cupernino_bottom_sheet
 
-
-https://user-images.githubusercontent.com/4113558/231658984-bf3425ce-22bd-4964-b01a-9b4fbceb18a7.mp4
+![Apr-20-2023 11-43-53](https://user-images.githubusercontent.com/4113558/233260343-c128dac5-198f-4ecc-abcf-13b590e98a3e.gif)
 
 
 
