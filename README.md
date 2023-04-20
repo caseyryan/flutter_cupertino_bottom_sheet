@@ -1,6 +1,9 @@
 A package that mimics a Cupertino Style bottom sheet like this
 
-https://pub.dev/packages/flutter_cupernino_bottom_sheet
+<a href="https://pub.dev/packages/flutter_cupernino_bottom_sheet"><img src="https://img.shields.io/pub/v/flutter_cupernino_bottom_sheet?logo=dart" alt="pub.dev"></a>[![style: effective dart](https://img.shields.io/badge/style-effective_dart-40c4ff.svg)](https://pub.dev/packages/effective_dart) <a href="https://github.com/Solido/awesome-flutter">
+<img alt="Awesome Flutter" src="https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square" />
+</a>
+
 
 ![Apr-20-2023 11-43-53](https://user-images.githubusercontent.com/4113558/233260343-c128dac5-198f-4ecc-abcf-13b590e98a3e.gif)
 
