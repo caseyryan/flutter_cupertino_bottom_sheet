@@ -89,5 +89,13 @@ And then call openCupertinoBottomSheet() from any place, regardless of context
 ```dart
 openCupertinoBottomSheet(builder: (c) {
     return const TestPage();
+    args: CupertinoBottomSheetRouteArgs(
+      appBar: CupertinoBottomSheetAppBar.withCloseButton(
+        title: 'Cupertino Actionsheet',
+        buttonText: 'Done',
+        headerStyle: Theme.of(context).textTheme.bodyMedium,
+        onClosePressed: Navigator.of(context).pop,
+      ),
+    ),
 });
 ```

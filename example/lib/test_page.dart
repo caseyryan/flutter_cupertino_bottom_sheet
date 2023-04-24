@@ -14,9 +14,13 @@ class _TestPageState extends State<TestPage> {
   void showCupertinoOverlay() {
     Navigator.of(context).push(
       CupertinoBottomSheetRoute(
-        args: const CupertinoBottomSheetRouteArgs(
-          swipeSettings: SwipeSettings(
+        args: CupertinoBottomSheetRouteArgs(
+          swipeSettings: const SwipeSettings(
             canCloseBySwipe: true,
+          ),
+          appBar: CupertinoBottomSheetAppBar.withCloseIcon(
+            title: 'Cupertino Actionsheet',
+            onClosePressed: Navigator.of(context).pop,
           ),
         ),
         builder: (context) {
@@ -48,9 +52,19 @@ class _TestPageState extends State<TestPage> {
               onPressed: () {
                 /// this will work if you pass cupertinoBottomSheetNavigatorKey
                 /// to your MaterialApp (or other type of apps that have a navigatorKey parameter)
-                openCupertinoBottomSheet(builder: (c) {
-                  return const TestPage();
-                });
+                openCupertinoBottomSheet(
+                  builder: (c) {
+                    return const TestPage();
+                  },
+                  args: CupertinoBottomSheetRouteArgs(
+                    appBar: CupertinoBottomSheetAppBar.withCloseButton(
+                      title: 'Cupertino Actionsheet',
+                      buttonText: 'Done',
+                      headerStyle: Theme.of(context).textTheme.bodyMedium,
+                      onClosePressed: Navigator.of(context).pop,
+                    ),
+                  ),
+                );
               },
               child: const Text(
                 'Open Cupertino Sheet without context',

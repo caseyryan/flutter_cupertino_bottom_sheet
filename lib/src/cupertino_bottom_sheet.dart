@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -59,12 +60,105 @@ class SwipeSettings {
   });
 }
 
+class CupertinoBottomSheetAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  final String title;
+  final Widget? leading;
+  final Widget? trailing;
+  final TextStyle? headerStyle;
+  final EdgeInsets? padding;
+
+  const CupertinoBottomSheetAppBar({
+    super.key,
+    required this.title,
+    this.trailing,
+    this.leading,
+    this.headerStyle,
+    this.padding = const EdgeInsets.symmetric(
+      horizontal: 8.0,
+    ),
+  });
+
+  factory CupertinoBottomSheetAppBar.withCloseButton({
+    required String title,
+    required String buttonText,
+    VoidCallback? onClosePressed,
+    TextStyle? headerStyle,
+  }) {
+    return CupertinoBottomSheetAppBar(
+      title: title,
+      trailing: CupertinoButton(
+        padding: EdgeInsets.zero,
+        onPressed: onClosePressed,
+        child: Text(
+          buttonText,
+          style: headerStyle,
+        ),
+      ),
+    );
+  }
+  factory CupertinoBottomSheetAppBar.withCloseIcon({
+    required String title,
+    VoidCallback? onClosePressed,
+    TextStyle? headerStyle,
+  }) {
+    return CupertinoBottomSheetAppBar(
+      title: title,
+      padding: null,
+      trailing: CloseButton(
+        onPressed: onClosePressed,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 60.0,
+      child: Padding(
+        padding: padding ?? EdgeInsets.zero,
+        child: Row(
+          children: [
+            Expanded(
+              flex: 18,
+              child: SizedBox(
+                child: leading,
+              ),
+            ),
+            Expanded(
+              flex: 74,
+              child: Center(
+                child: SizedBox(
+                  child: Text(
+                    title,
+                    style: headerStyle,
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 18,
+              child: SizedBox(
+                child: trailing,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(60.0);
+}
+
 class CupertinoBottomSheetRouteArgs {
   final bool maintainState;
   final SwipeSettings swipeSettings;
   final Color shadeColor;
   final Color? scaffoldBackgroundColor;
   final String? barrierLabel;
+  final PreferredSizeWidget? appBar;
 
   const CupertinoBottomSheetRouteArgs({
     this.maintainState = false,
@@ -72,6 +166,7 @@ class CupertinoBottomSheetRouteArgs {
     this.shadeColor = Colors.black,
     this.scaffoldBackgroundColor,
     this.barrierLabel,
+    this.appBar,
   });
 }
 
@@ -276,6 +371,7 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
                       context: context,
                       removeTop: true,
                       child: Scaffold(
+                        appBar: widget.args.appBar,
                         resizeToAvoidBottomInset: false,
                         extendBodyBehindAppBar: true,
                         backgroundColor: widget.args.scaffoldBackgroundColor,
