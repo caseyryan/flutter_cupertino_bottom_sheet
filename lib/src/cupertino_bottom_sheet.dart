@@ -87,12 +87,12 @@ class CupertinoBottomSheetAppBar extends StatelessWidget
   }) {
     return CupertinoBottomSheetAppBar(
       title: title,
+      headerStyle: headerStyle,
       trailing: CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: onClosePressed,
         child: Text(
           buttonText,
-          style: headerStyle,
         ),
       ),
     );

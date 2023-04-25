@@ -1,3 +1,5 @@
+## 1.0.4
+* Fixed headers style
 ## 1.0.3
 * Added two default appbars
 ## 1.0.1
