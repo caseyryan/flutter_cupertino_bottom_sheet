@@ -105,6 +105,7 @@ class CupertinoBottomSheetAppBar extends StatelessWidget
     return CupertinoBottomSheetAppBar(
       title: title,
       padding: null,
+      headerStyle: headerStyle,
       trailing: CloseButton(
         onPressed: onClosePressed,
       ),

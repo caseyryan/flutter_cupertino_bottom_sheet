@@ -1,3 +1,5 @@
+## 1.0.5
+* Fixed header stype for appbar with close icon
 ## 1.0.4
 * Fixed headers style
 ## 1.0.3
