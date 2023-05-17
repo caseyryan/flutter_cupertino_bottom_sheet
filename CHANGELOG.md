@@ -1,3 +1,5 @@
+## 1.0.7
+* One more small fix for rounded corners
 ## 1.0.6
 * Changed the logis for checking current route number
 * Lowered Flutter version

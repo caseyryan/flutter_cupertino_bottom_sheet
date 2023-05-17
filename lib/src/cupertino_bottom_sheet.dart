@@ -280,7 +280,7 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
   Widget _buildSnapshot() {
     /// it's a smal hack to position the first route snapshot
     /// into a correct position while zooming the stack out
-    if (_numRoutes == 1) {
+    if (_curRouteNumber == 0) {
       return ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(12.0),
