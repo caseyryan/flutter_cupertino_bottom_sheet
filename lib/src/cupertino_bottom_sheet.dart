@@ -233,9 +233,11 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
     with _PostFrameMixin {
   RawImage? _snapshot;
   static int _numRoutes = 0;
+  int _curRouteNumber = 0;
 
   @override
   void initState() {
+    _curRouteNumber = _numRoutes;
     _numRoutes++;
     super.initState();
   }
@@ -323,7 +325,7 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
       builder: (context, child) {
         final screenHeight = MediaQuery.of(context).size.height;
         double top = 0.0;
-        if (_numRoutes == 1) {
+        if (_curRouteNumber == 0) {
           top = (topNotch - kTopOffset + 5.0) * widget.animation.value;
         } else {
           top = -kTopOffset * widget.animation.value;

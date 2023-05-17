@@ -1,3 +1,6 @@
+## 1.0.6
+* Changed the logis for checking current route number
+* Lowered Flutter version
 ## 1.0.5
 * Fixed header stype for appbar with close icon
 ## 1.0.4
