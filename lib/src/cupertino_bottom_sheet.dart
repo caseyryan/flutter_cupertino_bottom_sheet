@@ -60,7 +60,8 @@ class SwipeSettings {
   });
 }
 
-class CupertinoBottomSheetAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CupertinoBottomSheetAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   final String title;
   final Widget? leading;
   final Widget? trailing;
@@ -387,7 +388,9 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
                         backgroundColor: widget.args.scaffoldBackgroundColor,
                         body: Padding(
                           padding: EdgeInsets.only(
-                            top: widget.args.appBar != null ? kToolbarHeight : 0.0,
+                            top: widget.args.appBar != null
+                                ? kToolbarHeight
+                                : 0.0,
                           ),
                           child: _buildChild(),
                         ),
@@ -566,8 +569,8 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
             final velocityXAbs = max(diffX.abs(), 0.001);
             final velocityYAbs = max(diffY.abs(), 0.001);
 
-            final delta =
-                max(velocityXAbs, velocityYAbs) / min(velocityXAbs, velocityYAbs);
+            final delta = max(velocityXAbs, velocityYAbs) /
+                min(velocityXAbs, velocityYAbs);
             final isAmbiguous = delta < 1.32;
             if (isAmbiguous) {
               return;
@@ -578,8 +581,9 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
                 return;
               }
               final fromLeft = newPosition.dx - _startPosition!.dx > 0;
-              final direction =
-                  fromLeft ? _SwipeDirection.leftToRight : _SwipeDirection.rightToLeft;
+              final direction = fromLeft
+                  ? _SwipeDirection.leftToRight
+                  : _SwipeDirection.rightToLeft;
               if (!_isSupportedDirection(direction)) {
                 return;
               }
@@ -601,8 +605,9 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
                 return;
               }
               final fromTop = newPosition.dy - _startPosition!.dy > 0;
-              final direction =
-                  fromTop ? _SwipeDirection.topToBottom : _SwipeDirection.bottomToTop;
+              final direction = fromTop
+                  ? _SwipeDirection.topToBottom
+                  : _SwipeDirection.bottomToTop;
               if (!_isSupportedDirection(direction)) {
                 return;
               }
@@ -613,7 +618,8 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
                   }
                 } else {
                   if (_startPosition!.dy <
-                      constraints.biggest.height - widget.interactiveEdgeWidth) {
+                      constraints.biggest.height -
+                          widget.interactiveEdgeWidth) {
                     return;
                   }
                 }
