@@ -1,3 +1,5 @@
+## 1.0.8
+* Added a possibility to change buttons styles and colors in appbars
 ## 1.0.7
 * One more small fix for rounded corners
 ## 1.0.6
