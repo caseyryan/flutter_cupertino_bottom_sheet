@@ -55,13 +55,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_cupernino_bottom_sheet:
+  flutter_cupertino_bottom_sheet:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "1.0.8"
+    version: "1.0.10"
   flutter_lints:
     dependency: "direct dev"
     description:

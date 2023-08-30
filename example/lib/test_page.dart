@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cupernino_bottom_sheet/flutter_cupernino_bottom_sheet.dart';
+import 'package:flutter_cupertino_bottom_sheet/flutter_cupertino_bottom_sheet.dart';
 
 class TestPage extends StatefulWidget {
   const TestPage({

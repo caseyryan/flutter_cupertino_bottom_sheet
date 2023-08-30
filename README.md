@@ -1,6 +1,6 @@
 ## A package that mimics a Cupertino bottom sheet like this VERY EASILY
 
-<a href="https://pub.dev/packages/flutter_cupernino_bottom_sheet"><img src="https://img.shields.io/pub/v/flutter_cupernino_bottom_sheet?logo=dart" alt="pub.dev"></a>[![style: effective dart](https://img.shields.io/badge/style-effective_dart-40c4ff.svg)](https://pub.dev/packages/effective_dart) <a href="https://github.com/Solido/awesome-flutter">
+<a href="https://pub.dev/packages/flutter_cupertino_bottom_sheet"><img src="https://img.shields.io/pub/v/flutter_cupertino_bottom_sheet?logo=dart" alt="pub.dev"></a>[![style: effective dart](https://img.shields.io/badge/style-effective_dart-40c4ff.svg)](https://pub.dev/packages/effective_dart) <a href="https://github.com/Solido/awesome-flutter">
 <img alt="Awesome Flutter" src="https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square" />
 </a>
 
@@ -9,7 +9,7 @@
 
 
 
-Unlike existing packages that can mimic the same behavior flutter_cupernino_bottom_sheet does not require
+Unlike existing packages that can mimic the same behavior flutter_cupertino_bottom_sheet does not require
 a scaffold for this purpose and can be used from any place and any time. 
 You don't have to use any special code except for wrapping your MaterialApp 
 with CupertinoBottomSheetRepaintBoundary() at the beginning. And that's it. 
@@ -27,7 +27,7 @@ snapshot
 import the package where you initialize your app
 
 ```dart
-import 'package:flutter_cupernino_bottom_sheet/flutter_cupernino_bottom_sheet.dart';
+import 'package:flutter_cupertino_bottom_sheet/flutter_cupertino_bottom_sheet.dart';
 ```
 
 And then wrap your MaterialApp or whatever type you use with CupertinoBottomSheetRepaintBoundary

@@ -91,7 +91,7 @@ class CupertinoBottomSheetAppBar extends StatelessWidget
       headerStyle: headerStyle,
       trailing: CupertinoButton(
         padding: EdgeInsets.zero,
-        onPressed: onClosePressed,
+        onPressed: onClosePressed ?? closeCupertinoBottomSheet,
         child: Text(
           buttonText,
           style: buttonTextStyle,
@@ -115,7 +115,7 @@ class CupertinoBottomSheetAppBar extends StatelessWidget
           Icons.close,
           color: iconColor ?? headerStyle?.color,
         ),
-        onPressed: onClosePressed,
+        onPressed: onClosePressed ?? closeCupertinoBottomSheet,
       ),
     );
   }
@@ -447,6 +447,10 @@ Future openCupertinoBottomSheet({
       builder: builder,
     ),
   );
+}
+
+void closeCupertinoBottomSheet<T>([T? result]) {
+  cupertinoBottomSheetNavigatorKey.currentState?.pop<T>(result);
 }
 
 mixin _PostFrameMixin<T extends StatefulWidget> on State<T> {
