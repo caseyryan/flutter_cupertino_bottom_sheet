@@ -30,6 +30,46 @@ class _TestPageState extends State<TestPage> {
     );
   }
 
+  void showCupertinoOverlayWithScroller() {
+    Navigator.of(context).push(
+      CupertinoBottomSheetRoute(
+        args: CupertinoBottomSheetRouteArgs(
+          swipeSettings: const SwipeSettings(
+            canCloseBySwipe: true,
+          ),
+          appBar: CupertinoBottomSheetAppBar.withCloseIcon(
+            title: 'Scrolled',
+            onClosePressed: Navigator.of(context).pop,
+          ),
+        ),
+        builder: (context) {
+          final controller = CupertinoBottomSheet.of(context)?.scrollController;
+          return Scaffold(
+            body: CustomScrollView(
+              controller: controller,
+              slivers: [
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    List.generate(
+                      100,
+                      (index) {
+                        return Container(
+                          height: 100,
+                          width: double.infinity,
+                          color: Colors.red.withOpacity(1 / ((index % 10) + 1)),
+                        );
+                      },
+                    ).toList(),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,9 +84,15 @@ class _TestPageState extends State<TestPage> {
                 'Open Cupertino Sheet',
               ),
             ),
-            const SizedBox(
-              height: 50.0,
+            const SizedBox(height: 50.0),
+            MaterialButton(
+              color: Colors.orange,
+              onPressed: showCupertinoOverlayWithScroller,
+              child: const Text(
+                'Open Cupertino Sheet With Scroller',
+              ),
             ),
+            const SizedBox(height: 50.0),
             MaterialButton(
               color: Colors.blue,
               onPressed: () {

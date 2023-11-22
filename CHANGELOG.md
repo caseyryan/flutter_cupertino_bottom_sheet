@@ -1,6 +1,9 @@
+## 1.1.0
+* You can now use CupertinoBottomSheet.of(context).scrollController in your view 
+to pass to any ScrollViews inside. In this case, the bottomsheet will not be closed by a swipe if the inner scroll view is not in a 0.0 position
 ## 1.0.10
-- Fixed package name. From Cupernino to Cupertino
-- added closeCupertinoBottomSheet global method to be able to close it also without a context
+* Fixed package name. From Cupernino to Cupertino
+* added closeCupertinoBottomSheet global method to be able to close it also without a context
 ## 1.0.8
 * Added a possibility to change buttons styles and colors in app bars
 ## 1.0.7

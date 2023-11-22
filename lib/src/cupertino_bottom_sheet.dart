@@ -242,6 +242,7 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
   RawImage? _snapshot;
   static int _numRoutes = 0;
   int _curRouteNumber = 0;
+  ScrollController? _scrollController;
 
   @override
   void initState() {
@@ -286,7 +287,7 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
   }
 
   Widget _buildSnapshot() {
-    /// it's a smal hack to position the first route snapshot
+    /// it's a small hack to position the first route snapshot
     /// into a correct position while zooming the stack out
     if (_curRouteNumber == 0) {
       return ClipRRect(
@@ -300,7 +301,7 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
     return _snapshot!;
   }
 
-  Widget _buildChild() {
+  Widget _buildChild(BuildContext context) {
     final child = widget.builder(context);
     if (widget.args.swipeSettings.canCloseBySwipe) {
       return _SwipeDetector(
@@ -310,6 +311,13 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
         onlySwipesFromEdges: widget.args.swipeSettings.onlySwipesFromEdges,
         onSwipe: (_SwipeDirection direction) {
           if (direction == _SwipeDirection.topToBottom) {
+            if (_scrollController?.hasClients == true) {
+              if (_scrollController!.position.pixels > 5.0) {
+                /// will not let the bottom sheet to close
+                /// if inner scroller is not in a zero position
+                return;
+              }
+            }
             Navigator.pop(context);
           }
         },
@@ -328,83 +336,107 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
     final topNotch = MediaQuery.of(context).viewPadding.top;
     const kTopOffset = 10.0;
 
-    return AnimatedBuilder(
-      animation: widget.animation,
-      builder: (context, child) {
-        final screenHeight = MediaQuery.of(context).size.height;
-        double top = 0.0;
-        if (_curRouteNumber == 0) {
-          top = (topNotch - kTopOffset + 5.0) * widget.animation.value;
-        } else {
-          top = -kTopOffset * widget.animation.value;
-        }
-        return Container(
-          height: double.infinity,
-          color: widget.args.shadeColor,
-          child: Stack(
-            children: [
-              Transform.translate(
-                offset: Offset(
-                  0.0,
-                  top,
-                ),
-                child: Transform.scale(
-                  alignment: Alignment.topCenter,
-                  scale: 1.0 - (.1 * widget.animation.value),
-                  child: _buildSnapshot(),
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                height: double.infinity,
-                color: widget.args.shadeColor.withOpacity(
-                  .16 * widget.animation.value,
-                ),
-              ),
-              Transform.translate(
-                transformHitTests: true,
-                offset: Offset(
-                  0.0,
-                  screenHeight * (1.0 - widget.animation.value),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: topNotch + kTopOffset,
+    return CupertinoBottomSheet(
+      child: AnimatedBuilder(
+        animation: widget.animation,
+        builder: (builderContext, child) {
+          _scrollController =
+              CupertinoBottomSheet.of(builderContext)?.scrollController;
+          final screenHeight = MediaQuery.of(context).size.height;
+          double top = 0.0;
+          if (_curRouteNumber == 0) {
+            top = (topNotch - kTopOffset + 5.0) * widget.animation.value;
+          } else {
+            top = -kTopOffset * widget.animation.value;
+          }
+          return Container(
+            height: double.infinity,
+            color: widget.args.shadeColor,
+            child: Stack(
+              children: [
+                Transform.translate(
+                  offset: Offset(
+                    0.0,
+                    top,
                   ),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(12.0),
-                      topRight: Radius.circular(12.0),
+                  child: Transform.scale(
+                    alignment: Alignment.topCenter,
+                    scale: 1.0 - (.1 * widget.animation.value),
+                    child: _buildSnapshot(),
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: widget.args.shadeColor.withOpacity(
+                    .16 * widget.animation.value,
+                  ),
+                ),
+                Transform.translate(
+                  transformHitTests: true,
+                  offset: Offset(
+                    0.0,
+                    screenHeight * (1.0 - widget.animation.value),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: topNotch + kTopOffset,
                     ),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(12.0),
+                        topRight: Radius.circular(12.0),
+                      ),
 
-                    /// fixes this issue https://github.com/flutter/flutter/issues/51345
-                    child: MediaQuery.removePadding(
-                      context: context,
-                      removeTop: true,
-                      child: Scaffold(
-                        appBar: widget.args.appBar,
-                        resizeToAvoidBottomInset: false,
-                        extendBodyBehindAppBar: true,
-                        backgroundColor: widget.args.scaffoldBackgroundColor,
-                        body: Padding(
-                          padding: EdgeInsets.only(
-                            top: widget.args.appBar != null
-                                ? kToolbarHeight
-                                : 0.0,
+                      /// fixes this issue https://github.com/flutter/flutter/issues/51345
+                      child: MediaQuery.removePadding(
+                        context: context,
+                        removeTop: true,
+                        child: Scaffold(
+                          appBar: widget.args.appBar,
+                          resizeToAvoidBottomInset: false,
+                          extendBodyBehindAppBar: true,
+                          backgroundColor: widget.args.scaffoldBackgroundColor,
+                          body: Padding(
+                            padding: EdgeInsets.only(
+                              top: widget.args.appBar != null
+                                  ? kToolbarHeight
+                                  : 0.0,
+                            ),
+                            child: _buildChild(builderContext),
                           ),
-                          child: _buildChild(),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
+}
+
+/// Call CupertinoBottomSheet.of(context) in your children
+/// and pass [scrollController] to your inner scroll views.
+/// In this case, it won't be closed by a swipe
+/// if your inner scroll view is not in a 0 position
+class CupertinoBottomSheet extends InheritedWidget {
+  final ScrollController scrollController = ScrollController();
+
+  CupertinoBottomSheet({
+    Key? key,
+    required Widget child,
+  }) : super(
+          child: child,
+          key: key,
+        );
+  @override
+  bool updateShouldNotify(CupertinoBottomSheet oldWidget) => false;
+  static CupertinoBottomSheet? of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<CupertinoBottomSheet>();
 }
 
 final GlobalKey _repaintBoundaryKey = GlobalKey();
@@ -499,8 +531,6 @@ class _SwipeDetector extends StatefulWidget {
   final bool onlySwipesFromEdges;
   final double interactiveEdgeWidth;
 
-  /// [onlySwipesFromEdges] если нужно разрешить только
-  /// свайпы от края экрана
   const _SwipeDetector({
     Key? key,
     required this.child,
