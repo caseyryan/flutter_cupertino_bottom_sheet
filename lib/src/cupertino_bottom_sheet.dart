@@ -60,13 +60,13 @@ class SwipeSettings {
   });
 }
 
-class CupertinoBottomSheetAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
+class CupertinoBottomSheetAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Widget? leading;
   final Widget? trailing;
   final TextStyle? headerStyle;
   final EdgeInsets? padding;
+  final int maxLines;
 
   const CupertinoBottomSheetAppBar({
     super.key,
@@ -74,6 +74,7 @@ class CupertinoBottomSheetAppBar extends StatelessWidget
     this.trailing,
     this.leading,
     this.headerStyle,
+    this.maxLines = 1,
     this.padding = const EdgeInsets.symmetric(
       horizontal: 8.0,
     ),
@@ -85,10 +86,12 @@ class CupertinoBottomSheetAppBar extends StatelessWidget
     VoidCallback? onClosePressed,
     TextStyle? headerStyle,
     TextStyle? buttonTextStyle,
+    int maxLines = 1,
   }) {
     return CupertinoBottomSheetAppBar(
       title: title,
       headerStyle: headerStyle,
+      maxLines: maxLines,
       trailing: CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: onClosePressed ?? closeCupertinoBottomSheet,
@@ -104,10 +107,12 @@ class CupertinoBottomSheetAppBar extends StatelessWidget
     VoidCallback? onClosePressed,
     TextStyle? headerStyle,
     Color? iconColor,
+    int maxLines = 1,
   }) {
     return CupertinoBottomSheetAppBar(
       title: title,
       padding: null,
+      maxLines: maxLines,
       headerStyle: headerStyle,
       trailing: IconButton(
         splashRadius: kToolbarHeight * .4,
@@ -141,6 +146,7 @@ class CupertinoBottomSheetAppBar extends StatelessWidget
                   child: Text(
                     title,
                     style: headerStyle,
+                    maxLines: maxLines,
                   ),
                 ),
               ),
@@ -237,8 +243,7 @@ class _CupertinoRouteBuilder extends StatefulWidget {
   State<_CupertinoRouteBuilder> createState() => __CupertinoRouteBuilderState();
 }
 
-class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
-    with _PostFrameMixin {
+class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder> with _PostFrameMixin {
   RawImage? _snapshot;
   static int _numRoutes = 0;
   int _curRouteNumber = 0;
@@ -252,8 +257,7 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
   }
 
   RenderRepaintBoundary get renderRepaintBoundary {
-    return _repaintBoundaryKey.currentContext!.findRenderObject()
-        as RenderRepaintBoundary;
+    return _repaintBoundaryKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
   }
 
   Future<RawImage> takeScreenshot() async {
@@ -340,8 +344,7 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
       child: AnimatedBuilder(
         animation: widget.animation,
         builder: (builderContext, child) {
-          _scrollController =
-              CupertinoBottomSheet.of(builderContext)?.scrollController;
+          _scrollController = CupertinoBottomSheet.of(builderContext)?.scrollController;
           final screenHeight = MediaQuery.of(context).size.height;
           double top = 0.0;
           if (_curRouteNumber == 0) {
@@ -399,9 +402,7 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
                           backgroundColor: widget.args.scaffoldBackgroundColor,
                           body: Padding(
                             padding: EdgeInsets.only(
-                              top: widget.args.appBar != null
-                                  ? kToolbarHeight
-                                  : 0.0,
+                              top: widget.args.appBar != null ? kToolbarHeight : 0.0,
                             ),
                             child: _buildChild(builderContext),
                           ),
@@ -566,13 +567,11 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
     if (widget.acceptedSwipes == _AcceptedSwipes.all) {
       return true;
     } else if (widget.acceptedSwipes == _AcceptedSwipes.horizontal) {
-      if (direction == _SwipeDirection.leftToRight ||
-          direction == _SwipeDirection.rightToLeft) {
+      if (direction == _SwipeDirection.leftToRight || direction == _SwipeDirection.rightToLeft) {
         return true;
       }
     } else if (widget.acceptedSwipes == _AcceptedSwipes.vertical) {
-      if (direction == _SwipeDirection.topToBottom ||
-          direction == _SwipeDirection.bottomToTop) {
+      if (direction == _SwipeDirection.topToBottom || direction == _SwipeDirection.bottomToTop) {
         return true;
       }
     }
@@ -603,8 +602,7 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
             final velocityXAbs = max(diffX.abs(), 0.001);
             final velocityYAbs = max(diffY.abs(), 0.001);
 
-            final delta = max(velocityXAbs, velocityYAbs) /
-                min(velocityXAbs, velocityYAbs);
+            final delta = max(velocityXAbs, velocityYAbs) / min(velocityXAbs, velocityYAbs);
             final isAmbiguous = delta < 1.32;
             if (isAmbiguous) {
               return;
@@ -615,9 +613,7 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
                 return;
               }
               final fromLeft = newPosition.dx - _startPosition!.dx > 0;
-              final direction = fromLeft
-                  ? _SwipeDirection.leftToRight
-                  : _SwipeDirection.rightToLeft;
+              final direction = fromLeft ? _SwipeDirection.leftToRight : _SwipeDirection.rightToLeft;
               if (!_isSupportedDirection(direction)) {
                 return;
               }
@@ -627,8 +623,7 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
                     return;
                   }
                 } else {
-                  if (_startPosition!.dx <
-                      constraints.biggest.width - widget.interactiveEdgeWidth) {
+                  if (_startPosition!.dx < constraints.biggest.width - widget.interactiveEdgeWidth) {
                     return;
                   }
                 }
@@ -639,9 +634,7 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
                 return;
               }
               final fromTop = newPosition.dy - _startPosition!.dy > 0;
-              final direction = fromTop
-                  ? _SwipeDirection.topToBottom
-                  : _SwipeDirection.bottomToTop;
+              final direction = fromTop ? _SwipeDirection.topToBottom : _SwipeDirection.bottomToTop;
               if (!_isSupportedDirection(direction)) {
                 return;
               }
@@ -651,9 +644,7 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
                     return;
                   }
                 } else {
-                  if (_startPosition!.dy <
-                      constraints.biggest.height -
-                          widget.interactiveEdgeWidth) {
+                  if (_startPosition!.dy < constraints.biggest.height - widget.interactiveEdgeWidth) {
                     return;
                   }
                 }

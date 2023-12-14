@@ -1,3 +1,5 @@
+## 1.1.1
+* Added `maxLines` property to the title
 ## 1.1.0
 * You can now use CupertinoBottomSheet.of(context).scrollController in your view 
 to pass to any ScrollViews inside. In this case, the bottomsheet will not be closed by a swipe if the inner scroll view is not in a 0.0 position
