@@ -1,3 +1,5 @@
+## 1.1.2
+* Added a check if (mounted) after taking a screenshot
 ## 1.1.1
 * Added `maxLines` property to the title
 ## 1.1.0

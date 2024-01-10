@@ -1,6 +1,6 @@
 name: flutter_cupertino_bottom_sheet
 description: A package that mimics a Cupertino Style bottom sheet.
-version: 1.1.1
+version: 1.1.2
 homepage: https://github.com/caseyryan/flutter_cupertino_bottom_sheet
 
 environment:

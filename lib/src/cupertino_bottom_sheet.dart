@@ -271,7 +271,9 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder> with _P
   Future didFirstLayoutFinished(BuildContext context) async {
     _snapshot = await takeScreenshot();
     if (_snapshot != null) {
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     } else {
       if (kDebugMode) {
         print('''
