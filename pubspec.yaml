@@ -1,15 +1,15 @@
 name: flutter_cupertino_bottom_sheet
 description: A package that mimics a Cupertino Style bottom sheet.
-version: 1.1.2
+version: 2.0.0
 homepage: https://github.com/caseyryan/flutter_cupertino_bottom_sheet
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
-  flutter: ">=1.17.0"
+  sdk: '>=2.19.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
+  flutter_keyboard_visibility: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -38,17 +38,6 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
   #
   # For details regarding fonts in packages, see
   # https://flutter.dev/custom-fonts/#from-packages

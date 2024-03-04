@@ -1,3 +1,6 @@
+## 2.0.0
+* Added keyboardActionPanel
+* Updated flutter sdk restriction
 ## 1.1.2
 * Added a check if (mounted) after taking a screenshot
 ## 1.1.1

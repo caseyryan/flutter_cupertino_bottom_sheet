@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_bottom_sheet/flutter_cupertino_bottom_sheet.dart';
 
+import 'test_page_with_text.dart';
+
 class TestPage extends StatefulWidget {
   const TestPage({
     super.key,
@@ -100,7 +102,7 @@ class _TestPageState extends State<TestPage> {
                 /// to your MaterialApp (or other type of apps that have a navigatorKey parameter)
                 openCupertinoBottomSheet(
                   builder: (c) {
-                    return const TestPage();
+                    return const TestPageWithText();
                   },
                   args: CupertinoBottomSheetRouteArgs(
                     appBar: CupertinoBottomSheetAppBar.withCloseButton(

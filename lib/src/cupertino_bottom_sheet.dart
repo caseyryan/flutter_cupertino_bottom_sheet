@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_cupertino_bottom_sheet/src/keyboard_wrapper.dart';
 
 /// Wrap your MaterialApp with this widget like this
 /// Widget build(BuildContext context) {
@@ -172,15 +173,22 @@ class CupertinoBottomSheetRouteArgs {
   final SwipeSettings swipeSettings;
   final Color shadeColor;
   final Color? scaffoldBackgroundColor;
+  final bool resizeToAvoidBottomInset;
   final String? barrierLabel;
   final PreferredSizeWidget? appBar;
+
+  /// A content for keyboard action panel.
+  /// Must be used with [resizeToAvoidBottomInset] true
+  final Widget? keyboardActionPanelContent;
 
   const CupertinoBottomSheetRouteArgs({
     this.maintainState = false,
     this.swipeSettings = const SwipeSettings(),
     this.shadeColor = Colors.black,
     this.scaffoldBackgroundColor,
+    this.resizeToAvoidBottomInset = true,
     this.barrierLabel,
+    this.keyboardActionPanelContent,
     this.appBar,
   });
 }
@@ -251,6 +259,12 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder> with _P
 
   @override
   void initState() {
+    if (widget.args.keyboardActionPanelContent != null) {
+      assert(
+        widget.args.resizeToAvoidBottomInset,
+        '[resizeToAvoidBottomInset] must be true in order to use [keyboardActionPanelContent]',
+      );
+    }
     _curRouteNumber = _numRoutes;
     _numRoutes++;
     super.initState();
@@ -399,14 +413,17 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder> with _P
                         removeTop: true,
                         child: Scaffold(
                           appBar: widget.args.appBar,
-                          resizeToAvoidBottomInset: false,
+                          resizeToAvoidBottomInset: widget.args.resizeToAvoidBottomInset,
                           extendBodyBehindAppBar: true,
                           backgroundColor: widget.args.scaffoldBackgroundColor,
-                          body: Padding(
-                            padding: EdgeInsets.only(
-                              top: widget.args.appBar != null ? kToolbarHeight : 0.0,
+                          body: KeyboardWrapper(
+                            // contents: ,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                top: widget.args.appBar != null ? kToolbarHeight : 0.0,
+                              ),
+                              child: _buildChild(builderContext),
                             ),
-                            child: _buildChild(builderContext),
                           ),
                         ),
                       ),
