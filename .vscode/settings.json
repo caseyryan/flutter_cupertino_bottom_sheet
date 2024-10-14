@@ -1,4 +1,4 @@
 {
-    "dart.flutterSdkPath": "/Users/konstantin/FlutterProjects/.fvm/flutter_sdk",
-    "git-blame.gitWebUrl": ""
+  "dart.flutterSdkPath": ".fvm/versions/3.24.3",
+  "git-blame.gitWebUrl": ""
 }

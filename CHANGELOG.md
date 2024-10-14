@@ -1,3 +1,8 @@
+## 2.0.1
+* Added two properties to the CupertinoBottomSheetRouteArgs
+    - brightness
+    - systemUiOverlayStyle
+Provide either of them to be able to control your system UI colors
 ## 2.0.0
 * Added keyboardActionPanel
 * Updated flutter sdk restriction

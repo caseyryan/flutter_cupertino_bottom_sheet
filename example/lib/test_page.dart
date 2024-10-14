@@ -17,6 +17,8 @@ class _TestPageState extends State<TestPage> {
     Navigator.of(context).push(
       CupertinoBottomSheetRoute(
         args: CupertinoBottomSheetRouteArgs(
+          brightness: Brightness.dark,
+          // systemUiOverlayStyle: SystemUiOverlayStyle.light,
           swipeSettings: const SwipeSettings(
             canCloseBySwipe: true,
           ),
@@ -105,6 +107,7 @@ class _TestPageState extends State<TestPage> {
                     return const TestPageWithText();
                   },
                   args: CupertinoBottomSheetRouteArgs(
+                    brightness: Brightness.dark,
                     appBar: CupertinoBottomSheetAppBar.withCloseButton(
                       title: 'Cupertino Actionsheet',
                       buttonText: 'Done',

@@ -102,7 +102,8 @@ class _KeyboardWrapperState extends State<KeyboardWrapper> {
                 Material(
                   animationDuration: Duration.zero,
                   elevation: 10.0,
-                  color: widget.backgroundColor ?? Theme.of(context).canvasColor,
+                  color:
+                      widget.backgroundColor ?? Theme.of(context).canvasColor,
                   child: SizedBox(
                     height: widget.height,
                     width: double.infinity,

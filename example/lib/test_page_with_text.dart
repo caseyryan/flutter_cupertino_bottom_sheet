@@ -10,7 +10,6 @@ class TestPageWithText extends StatefulWidget {
 }
 
 class _TestPageWithTextState extends State<TestPageWithText> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

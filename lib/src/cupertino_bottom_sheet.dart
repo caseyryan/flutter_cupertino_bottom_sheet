@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_cupertino_bottom_sheet/src/keyboard_wrapper.dart';
 
 /// Wrap your MaterialApp with this widget like this
@@ -61,7 +62,8 @@ class SwipeSettings {
   });
 }
 
-class CupertinoBottomSheetAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CupertinoBottomSheetAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   final String title;
   final Widget? leading;
   final Widget? trailing;
@@ -176,6 +178,8 @@ class CupertinoBottomSheetRouteArgs {
   final bool resizeToAvoidBottomInset;
   final String? barrierLabel;
   final PreferredSizeWidget? appBar;
+  final Brightness? brightness;
+  final SystemUiOverlayStyle? systemUiOverlayStyle;
 
   /// A content for keyboard action panel.
   /// Must be used with [resizeToAvoidBottomInset] true
@@ -188,9 +192,14 @@ class CupertinoBottomSheetRouteArgs {
     this.scaffoldBackgroundColor,
     this.resizeToAvoidBottomInset = true,
     this.barrierLabel,
+    this.brightness,
     this.keyboardActionPanelContent,
     this.appBar,
-  });
+    this.systemUiOverlayStyle,
+  }) : assert(
+          brightness == null || systemUiOverlayStyle == null,
+          'You can provide either brightness or systemUiOverlayStyle, not both.',
+        );
 }
 
 typedef ChildBuilder = Widget Function(BuildContext context);
@@ -251,14 +260,20 @@ class _CupertinoRouteBuilder extends StatefulWidget {
   State<_CupertinoRouteBuilder> createState() => __CupertinoRouteBuilderState();
 }
 
-class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder> with _PostFrameMixin {
+class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder>
+    with _PostFrameMixin {
   RawImage? _snapshot;
   static int _numRoutes = 0;
   int _curRouteNumber = 0;
   ScrollController? _scrollController;
+  SystemUiOverlayStyle? _prevOverlayStyle;
 
   @override
   void initState() {
+    if (_needsToUpdateOverlayStyle) {
+      // ignore: invalid_use_of_visible_for_testing_member
+      _prevOverlayStyle = SystemChrome.latestStyle;
+    }
     if (widget.args.keyboardActionPanelContent != null) {
       assert(
         widget.args.resizeToAvoidBottomInset,
@@ -270,8 +285,13 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder> with _P
     super.initState();
   }
 
+  bool get _needsToUpdateOverlayStyle =>
+      widget.args.systemUiOverlayStyle != null ||
+      widget.args.brightness != null;
+
   RenderRepaintBoundary get renderRepaintBoundary {
-    return _repaintBoundaryKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+    return _repaintBoundaryKey.currentContext!.findRenderObject()
+        as RenderRepaintBoundary;
   }
 
   Future<RawImage> takeScreenshot() async {
@@ -302,6 +322,9 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder> with _P
     _numRoutes--;
     if (_numRoutes < 0) {
       _numRoutes = 0;
+    }
+    if (_needsToUpdateOverlayStyle && _prevOverlayStyle != null) {
+      SystemChrome.setSystemUIOverlayStyle(_prevOverlayStyle!);
     }
     super.dispose();
   }
@@ -347,6 +370,24 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder> with _P
     return child;
   }
 
+  SystemUiOverlayStyle _getUIColors(
+    Brightness? brightness,
+  ) {
+    brightness ??= Theme.of(context).brightness;
+    var overlayStyle = brightness == Brightness.dark
+        ? SystemUiOverlayStyle.light
+        : SystemUiOverlayStyle.dark;
+    if (kIsWeb) return overlayStyle;
+    return overlayStyle.copyWith(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: brightness,
+
+      /// top bar with clock and notifications
+      statusBarBrightness: brightness,
+      systemNavigationBarIconBrightness: brightness,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_snapshot == null) {
@@ -355,12 +396,12 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder> with _P
 
     final topNotch = MediaQuery.of(context).viewPadding.top;
     const kTopOffset = 10.0;
-
-    return CupertinoBottomSheet(
+    final child = CupertinoBottomSheet(
       child: AnimatedBuilder(
         animation: widget.animation,
         builder: (builderContext, child) {
-          _scrollController = CupertinoBottomSheet.of(builderContext)?.scrollController;
+          _scrollController =
+              CupertinoBottomSheet.of(builderContext)?.scrollController;
           final screenHeight = MediaQuery.of(context).size.height;
           double top = 0.0;
           if (_curRouteNumber == 0) {
@@ -413,14 +454,17 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder> with _P
                         removeTop: true,
                         child: Scaffold(
                           appBar: widget.args.appBar,
-                          resizeToAvoidBottomInset: widget.args.resizeToAvoidBottomInset,
+                          resizeToAvoidBottomInset:
+                              widget.args.resizeToAvoidBottomInset,
                           extendBodyBehindAppBar: true,
                           backgroundColor: widget.args.scaffoldBackgroundColor,
                           body: KeyboardWrapper(
                             // contents: ,
                             child: Padding(
                               padding: EdgeInsets.only(
-                                top: widget.args.appBar != null ? kToolbarHeight : 0.0,
+                                top: widget.args.appBar != null
+                                    ? kToolbarHeight
+                                    : 0.0,
                               ),
                               child: _buildChild(builderContext),
                             ),
@@ -436,6 +480,14 @@ class __CupertinoRouteBuilderState extends State<_CupertinoRouteBuilder> with _P
         },
       ),
     );
+    if (_needsToUpdateOverlayStyle) {
+      return AnnotatedRegion(
+        value: widget.args.systemUiOverlayStyle ??
+            _getUIColors(widget.args.brightness),
+        child: child,
+      );
+    }
+    return child;
   }
 }
 
@@ -586,11 +638,13 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
     if (widget.acceptedSwipes == _AcceptedSwipes.all) {
       return true;
     } else if (widget.acceptedSwipes == _AcceptedSwipes.horizontal) {
-      if (direction == _SwipeDirection.leftToRight || direction == _SwipeDirection.rightToLeft) {
+      if (direction == _SwipeDirection.leftToRight ||
+          direction == _SwipeDirection.rightToLeft) {
         return true;
       }
     } else if (widget.acceptedSwipes == _AcceptedSwipes.vertical) {
-      if (direction == _SwipeDirection.topToBottom || direction == _SwipeDirection.bottomToTop) {
+      if (direction == _SwipeDirection.topToBottom ||
+          direction == _SwipeDirection.bottomToTop) {
         return true;
       }
     }
@@ -621,7 +675,8 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
             final velocityXAbs = max(diffX.abs(), 0.001);
             final velocityYAbs = max(diffY.abs(), 0.001);
 
-            final delta = max(velocityXAbs, velocityYAbs) / min(velocityXAbs, velocityYAbs);
+            final delta = max(velocityXAbs, velocityYAbs) /
+                min(velocityXAbs, velocityYAbs);
             final isAmbiguous = delta < 1.32;
             if (isAmbiguous) {
               return;
@@ -632,7 +687,9 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
                 return;
               }
               final fromLeft = newPosition.dx - _startPosition!.dx > 0;
-              final direction = fromLeft ? _SwipeDirection.leftToRight : _SwipeDirection.rightToLeft;
+              final direction = fromLeft
+                  ? _SwipeDirection.leftToRight
+                  : _SwipeDirection.rightToLeft;
               if (!_isSupportedDirection(direction)) {
                 return;
               }
@@ -642,7 +699,8 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
                     return;
                   }
                 } else {
-                  if (_startPosition!.dx < constraints.biggest.width - widget.interactiveEdgeWidth) {
+                  if (_startPosition!.dx <
+                      constraints.biggest.width - widget.interactiveEdgeWidth) {
                     return;
                   }
                 }
@@ -653,7 +711,9 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
                 return;
               }
               final fromTop = newPosition.dy - _startPosition!.dy > 0;
-              final direction = fromTop ? _SwipeDirection.topToBottom : _SwipeDirection.bottomToTop;
+              final direction = fromTop
+                  ? _SwipeDirection.topToBottom
+                  : _SwipeDirection.bottomToTop;
               if (!_isSupportedDirection(direction)) {
                 return;
               }
@@ -663,7 +723,9 @@ class _SwipeDetectorState extends State<_SwipeDetector> {
                     return;
                   }
                 } else {
-                  if (_startPosition!.dy < constraints.biggest.height - widget.interactiveEdgeWidth) {
+                  if (_startPosition!.dy <
+                      constraints.biggest.height -
+                          widget.interactiveEdgeWidth) {
                     return;
                   }
                 }
